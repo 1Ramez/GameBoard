@@ -4,32 +4,24 @@
 #include <memory>   // Required for unique_ptr
 
 #include "BoardGame_Classes.h"
+#include "Numerical.h"
+#include "Numerical.cpp"
 using namespace std;
 
 int main(){
     string choice;
     while(true){
-        bool playing = false;
+        cout << "For exit Enter 0\n";
         cout << "For Numerical Tic-Tac-Toe Enter 1\n";
         cout << "Enter your choice: ";
         cin >> choice;
-        if (choice == "1"){
+        if (choice == "0"){
+            break;
+        }else if (choice == "1"){
             //Numerical Tic-Tac-Toe variables and calls here
 
-            playing = true;
         }else{
             cout << "Invalid Choice, Please select a valid number";
-        }
-        
-        //Replaying the games menu
-        if (playing){
-            string again;
-            cout << "If you want to play again Enter 1\nIf you want to close the app Enter anything\n";
-            cout << "Enter your choice: ";
-            cin >> again;
-            if(again != "1"){
-                break;
-            }
         }
     }
     
