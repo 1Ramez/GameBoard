@@ -5,6 +5,7 @@
 
 #include "BoardGame_Classes.h"
 #include "Numerical.h"
+#include "Misere.h"
 using namespace std;
 
 int main(){
@@ -12,6 +13,7 @@ int main(){
     while(true){
         cout << "For exit Enter 0\n";
         cout << "For Numerical Tic-Tac-Toe Enter 1\n";
+        cout << "For Misere Tic-Tac-Toe Enter 2\n";
         cout << "Enter your choice: ";
         cin >> choice;
         if (choice == "0"){
@@ -49,7 +51,46 @@ int main(){
             delete board;
             delete ui;
 
-        }else{
+        }
+        
+else if (choice == "2") {
+    srand(time(0));
+
+        Misere_UI* ui = new Misere_UI();
+        Misere_Board* board = new Misere_Board();
+
+        Player<char>** players = new Player<char>*[2];
+        string name1, name2;
+        string type_choice;
+
+    cout << "Enter Player 1 name: ";
+    cin >> name1;
+    cout << "1: Human, 2: Computer: ";
+    cin >> type_choice;
+    players[0] = ui->create_player(name1, 'X',
+                    type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
+
+    cout << "Enter Player 2 name: ";
+    cin >> name2;
+    cout << "1: Human, 2: Computer: ";
+    cin >> type_choice;
+    players[1] = ui->create_player(name2, 'O',
+                    type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
+
+    players[0]->set_board_ptr(board);
+    players[1]->set_board_ptr(board);
+
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
+    delete board;
+    delete ui;
+}
+
+        else{
             cout << "Invalid choice! Please try again.\n";
         }
     }
