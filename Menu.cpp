@@ -6,6 +6,7 @@
 #include "BoardGame_Classes.h"
 #include "Numerical.h"
 #include "Misere.h"
+#include "Four-in-a-row.h"
 using namespace std;
 
 int main(){
@@ -14,6 +15,7 @@ int main(){
         cout << "For exit Enter 0\n";
         cout << "For Numerical Tic-Tac-Toe Enter 1\n";
         cout << "For Misere Tic-Tac-Toe Enter 2\n";
+        cout<<"For Four-in-a-row Enter 3\n";
         cout << "Enter your choice: ";
         cin >> choice;
         if (choice == "0"){
@@ -89,7 +91,27 @@ else if (choice == "2") {
     delete board;
     delete ui;
 }
+else if(choice == "3"){
+ srand(static_cast<unsigned int>(time(0)));  
+    UI<char>* game_ui = new Four_in_a_row_UI();
+    Board<char>* xo_board = new Four_in_a_row_Board();
 
+    Player<char>** players = game_ui->setup_players();
+
+    GameManager<char> four_in_a_row_game(xo_board, players, game_ui);
+
+    four_in_a_row_game.run();
+
+    delete xo_board;
+    for (int i = 0; i < 2; ++i) {
+        delete players[i];
+    }
+   delete[] players;
+
+  
+
+          
+        }
         else{
             cout << "Invalid choice! Please try again.\n";
         }
