@@ -7,7 +7,12 @@
 #include "Numerical.h"
 #include "Misere.h"
 #include "Four-in-a-row.h"
+#include "XO_FivebyFive.h"
 using namespace std;
+
+void playNumerical(){
+    
+}
 
 int main(){
     string choice;
@@ -15,7 +20,8 @@ int main(){
         cout << "For exit Enter 0\n";
         cout << "For Numerical Tic-Tac-Toe Enter 1\n";
         cout << "For Misere Tic-Tac-Toe Enter 2\n";
-        cout<<"For Four-in-a-row Enter 3\n";
+        cout << "For Four-in-a-row Enter 3\n";
+        cout << "For 5x5 Tic-Tac-Toe Enter 4\n";
         cout << "Enter your choice: ";
         cin >> choice;
         if (choice == "0"){
@@ -53,67 +59,74 @@ int main(){
             delete board;
             delete ui;
 
-        }
-        
-else if (choice == "2") {
-    srand(time(0));
+        }else if (choice == "2"){
+            srand(time(0));
 
-        Misere_UI* ui = new Misere_UI();
-        Misere_Board* board = new Misere_Board();
+            Misere_UI* ui = new Misere_UI();
+            Misere_Board* board = new Misere_Board();
 
-        Player<char>** players = new Player<char>*[2];
-        string name1, name2;
-        string type_choice;
+            Player<char>** players = new Player<char>*[2];
+            string name1, name2;
+            string type_choice;
 
-    cout << "Enter Player 1 name: ";
-    cin >> name1;
-    cout << "1: Human, 2: Computer: ";
-    cin >> type_choice;
-    players[0] = ui->create_player(name1, 'X',
-                    type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
+            cout << "Enter Player 1 name: ";
+            cin >> name1;
+            cout << "1: Human, 2: Computer: ";
+            cin >> type_choice;
+            players[0] = ui->create_player(name1, 'X', type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
 
-    cout << "Enter Player 2 name: ";
-    cin >> name2;
-    cout << "1: Human, 2: Computer: ";
-    cin >> type_choice;
-    players[1] = ui->create_player(name2, 'O',
-                    type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
+            cout << "Enter Player 2 name: ";
+            cin >> name2;
+            cout << "1: Human, 2: Computer: ";
+            cin >> type_choice;
+            players[1] = ui->create_player(name2, 'O', type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
 
-    players[0]->set_board_ptr(board);
-    players[1]->set_board_ptr(board);
+            players[0]->set_board_ptr(board);
+            players[1]->set_board_ptr(board);
 
-    GameManager<char> game(board, players, ui);
-    game.run();
+            GameManager<char> game(board, players, ui);
+            game.run();
 
-    delete players[0];
-    delete players[1];
-    delete[] players;
-    delete board;
-    delete ui;
-}
-else if(choice == "3"){
- srand(static_cast<unsigned int>(time(0)));  
-    UI<char>* game_ui = new Four_in_a_row_UI();
-    Board<char>* xo_board = new Four_in_a_row_Board();
+            delete players[0];
+            delete players[1];
+            delete[] players;
+            delete board;
+            delete ui;
+        }else if(choice == "3"){
+            srand(static_cast<unsigned int>(time(0)));  
+            UI<char>* game_ui = new Four_in_a_row_UI();
+            Board<char>* xo_board = new Four_in_a_row_Board();
 
-    Player<char>** players = game_ui->setup_players();
+            Player<char>** players = game_ui->setup_players();
 
-    GameManager<char> four_in_a_row_game(xo_board, players, game_ui);
+            GameManager<char> four_in_a_row_game(xo_board, players, game_ui);
 
-    four_in_a_row_game.run();
+            four_in_a_row_game.run();
 
-    delete xo_board;
-    for (int i = 0; i < 2; ++i) {
-        delete players[i];
-    }
-   delete[] players;
+            delete xo_board;
+            for (int i = 0; i < 2; ++i){
+                delete players[i];
+            }
+            delete[] players;
 
-  
+        }else if(choice == "4"){
+            srand(static_cast<unsigned int>(time(0)));
 
-          
-        }
-        else{
+            UI<char>* game_ui = new XO_5x5_UI();
+            Board<char>* xo_board = new XO_5x5_Board();
+            Player<char>** players = game_ui->setup_players();
+
+            GameManager<char> x_o_game(xo_board, players, game_ui);
+            x_o_game.run();
+
+            delete xo_board;
+            for (int i = 0; i < 2; ++i){
+                delete players[i];
+            }
+            delete[] players;
+        }else{
             cout << "Invalid choice! Please try again.\n";
+            continue;
         }
     }
     
