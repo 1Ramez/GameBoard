@@ -12,7 +12,7 @@ public:
     XO_5x5_Board();
     bool update_board(Move<char>* move);
     bool is_win(Player<char>* player);
-    bool is_lose(Player<char>*) { return false; };
+    bool is_lose(Player<char>* player);
     bool is_draw(Player<char>* player);
     bool game_is_over(Player<char>* player);
 };

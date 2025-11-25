@@ -32,43 +32,79 @@ bool XO_5x5_Board::update_board(Move<char>* move) {
 }
 
 bool XO_5x5_Board::is_win(Player<char>* player) {
-    const char sym = player->get_symbol();
+    char sym = player->get_symbol();
+    int score = 0;
 
-    auto all_equal = [&](char a, char b, char c) {
-        return a == b && b == c && a != blank_symbol;
-        };
-
-    // Check rows and columns
-    for (int i = 0; i < rows; ++i) {
-        if ((all_equal(board[i][0], board[i][1], board[i][2]) && board[i][0] == sym) ||
-            (all_equal(board[0][i], board[1][i], board[2][i]) && board[0][i] == sym))
-            return true;
+    //Rows
+    for (int r = 0; r < 5; r++){
+        for (int c = 0; c <= 5 - 3; c++){
+            if (board[r][c] == sym && board[r][c+1] == sym && board[r][c+2] == sym){
+                score++;
+            }
+        }    
     }
 
-    // Check diagonals
-    if ((all_equal(board[0][0], board[1][1], board[2][2]) && board[1][1] == sym) ||
-        (all_equal(board[0][2], board[1][1], board[2][0]) && board[1][1] == sym))
+    //Columns
+    for (int c = 0; c < 5; c++){
+        for (int r = 0; r <= 5 - 3; r++){
+            if (board[r][c] == sym && board[r+1][c] == sym && board[r+2][c] == sym){
+                score++;
+            }
+        }
+    }
+
+    //Diagonals
+    for (int r = 0; r <= 5 - 3; r++){
+        for (int c = 0; c <= 5 - 3; c++){
+            if (board[r][c] == sym && board[r+1][c+1] == sym && board[r+2][c+2] == sym){
+                score++;
+            }
+        }  
+    }
+
+    //Opposite Diagonals
+    for (int r = 0; r <= 5 - 3; r++){
+        for (int c = 2; c < 5; c++){
+            if (board[r][c] == sym && board[r+1][c-1] == sym && board[r+2][c-2] == sym){
+                score++;
+            }
+        }    
+    }
+
+    //Recording scores
+    if (sym == 'X'){
+        p1_score = score;
+    }else{
+        p2_score = score;
+    }
+
+    if(n_moves == 24 && p2_score > p1_score){
         return true;
+    }
 
     return false;
 }
 
+bool XO_5x5_Board::is_lose(Player<char>* player){
+    if (n_moves == 24 && p1_score > p2_score){
+        return true;
+    }
+    
+    return false;
+}
+
 bool XO_5x5_Board::is_draw(Player<char>* player) {
-    return (n_moves == 9 && !is_win(player));
+    return (n_moves == 24 && p1_score == p2_score);
 }
 
 bool XO_5x5_Board::game_is_over(Player<char>* player) {
-    return is_win(player) || is_draw(player);
+    return (n_moves == 24);
 }
 
-//--------------------------------------- XO_UI Implementation
-
-XO_5x5_UI::XO_5x5_UI() : UI<char>("Weclome to FCAI X-O Game by Dr El-Ramly", 3) {}
+XO_5x5_UI::XO_5x5_UI() : UI<char>("Welcome to 5x5 Tic-Tac-Toe", 3) {}
 
 Player<char>* XO_5x5_UI::create_player(string& name, char symbol, PlayerType type) {
-    // Create player based on type
-    cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer")
-        << " player: " << name << " (" << symbol << ")\n";
+    cout << "Creating " << (type == PlayerType::HUMAN ? "human" : "computer") << " player: " << name << " (" << symbol << ")\n";
 
     return new Player<char>(name, symbol, type);
 }
@@ -77,7 +113,7 @@ Move<char>* XO_5x5_UI::get_move(Player<char>* player) {
     int x, y;
     
     if (player->get_type() == PlayerType::HUMAN) {
-        cout << "\nPlease enter your move x and y (0 to 2): ";
+        cout << "\nPlease enter your move x and y (0 to 4): ";
         cin >> x >> y;
     }
     else if (player->get_type() == PlayerType::COMPUTER) {
