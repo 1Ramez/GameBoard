@@ -8,6 +8,8 @@
 #include "Misere.h"
 #include "Four-in-a-row.h"
 #include "XO_FivebyFive.h"
+#include "InfinityXO_Classes.h"
+#include "FourByFour_Classes.h"
 using namespace std;
 
 void playNumerical(){
@@ -22,6 +24,8 @@ int main(){
         cout << "For Misere Tic-Tac-Toe Enter 2\n";
         cout << "For Four-in-a-row Enter 3\n";
         cout << "For 5x5 Tic-Tac-Toe Enter 4\n";
+        cout << "For Infinity Tic-Tac-Toe Enter 5\n";
+        cout << "For 4x4 Tic-Tac-Toe Enter 6\n";
         cout << "Enter your choice: ";
         cin >> choice;
         if (choice == "0"){
@@ -124,10 +128,36 @@ int main(){
                 delete players[i];
             }
             delete[] players;
+        }else if (choice == "5"){
+            Infinity_UI ui;
+            Player<char>** players = ui.setup_players();
+            Infinity_Board board;
+            GameManager<char> game(&board, players, &ui);
+            game.run();
+            delete players[0]; delete players[1]; delete[] players;
+
+        } else if (choice == "6"){
+            FourByFour_UI ui;
+            string n1, n2;
+            int t1, t2;
+            cout << "Enter player 1 name: "; cin >> n1;
+            cout << "Choose type (1=Human,2=Computer): "; cin >> t1;
+            cout << "Enter player 2 name: "; cin >> n2;
+            cout << "Choose type (1=Human,2=Computer): "; cin >> t2;
+
+            Player<char>* p1 = new Player<char>(n1, 'X', t1 == 1 ? PlayerType::HUMAN : PlayerType::COMPUTER);
+            Player<char>* p2 = new Player<char>(n2, 'O', t2 == 1 ? PlayerType::HUMAN : PlayerType::COMPUTER);
+
+            FourByFour_Board board;
+            Player<char>** arr = new Player<char>*[2] {p1, p2};
+            GameManager<char> game(&board, arr, &ui);
+            game.run();
+            delete p1; delete p2; delete[] arr;
+
         }else{
             cout << "Invalid choice! Please try again.\n";
             continue;
-        }
+        } 
     }
     
     return 0;
