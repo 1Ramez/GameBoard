@@ -64,38 +64,22 @@ int main(){
             delete ui;
 
         }else if (choice == "2"){
-            srand(time(0));
+            srand(static_cast<unsigned int>(time(0)));  
+            UI<char>* ui = new Misere_UI();
+            Board<char>* xo_board = new Misere_Board();
 
-            Misere_UI* ui = new Misere_UI();
-            Misere_Board* board = new Misere_Board();
+            Player<char>** players = ui->setup_players();
 
-            Player<char>** players = new Player<char>*[2];
-            string name1, name2;
-            string type_choice;
+            GameManager<char> Misere_game(xo_board, players, ui);
 
-            cout << "Enter Player 1 name: ";
-            cin >> name1;
-            cout << "1: Human, 2: Computer: ";
-            cin >> type_choice;
-            players[0] = ui->create_player(name1, 'X', type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
+            Misere_game.run();
 
-            cout << "Enter Player 2 name: ";
-            cin >> name2;
-            cout << "1: Human, 2: Computer: ";
-            cin >> type_choice;
-            players[1] = ui->create_player(name2, 'O', type_choice == "1" ? PlayerType::HUMAN : PlayerType::COMPUTER);
-
-            players[0]->set_board_ptr(board);
-            players[1]->set_board_ptr(board);
-
-            GameManager<char> game(board, players, ui);
-            game.run();
-
-            delete players[0];
-            delete players[1];
+            delete xo_board;
+            for (int i = 0; i < 2; i++){
+                delete players[i];
+            }
             delete[] players;
-            delete board;
-            delete ui;
+
         }else if(choice == "3"){
             srand(static_cast<unsigned int>(time(0)));  
             UI<char>* game_ui = new Four_in_a_row_UI();
