@@ -94,6 +94,7 @@ Move<char>* Infinity_UI::get_move(Player<char>* player) {
     if (player->get_type() == PlayerType::HUMAN) {
         cout << "\n" << player->get_name() << ", enter your move (x y): ";
         cin >> x >> y;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     else {
         x = rand() % player->get_board_ptr()->get_rows();

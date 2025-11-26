@@ -82,6 +82,7 @@ Move<char>* Four_in_a_row_UI::get_move(Player<char>* player) {
     if (player->get_type() == PlayerType::HUMAN) {
         cout << "\nPlease enter your move (0->6)  ";
         cin >>  y;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     else if (player->get_type() == PlayerType::COMPUTER) {
         y = rand() % player->get_board_ptr()->get_columns();

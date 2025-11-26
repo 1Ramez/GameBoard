@@ -115,6 +115,7 @@ Move<char>* XO_5x5_UI::get_move(Player<char>* player) {
     if (player->get_type() == PlayerType::HUMAN) {
         cout << "\nPlease enter your move x and y (0 to 4): ";
         cin >> x >> y;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     else if (player->get_type() == PlayerType::COMPUTER) {
         x = rand() % player->get_board_ptr()->get_rows();

@@ -72,6 +72,7 @@ Move<char>* Misere_UI::get_move(Player<char>* player) {
     if (player->get_type() == PlayerType::HUMAN) {
         cout << player->get_name() << " please enter row and col: ";
         cin >> x >> y;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         return new Move<char>(x, y, player->get_symbol());
     }

@@ -84,6 +84,7 @@ Move<int>* Numerical_UI::get_move(Player<int>* player) {
     if (player->get_type() == PlayerType::HUMAN) {
         cout << player->get_name() << " - Enter row, column, and number: ";
             cin >> x >> y >> num;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
     bool flag = false;
     while (!flag) {
         if (!board->is_valid_number(num, player)) {
