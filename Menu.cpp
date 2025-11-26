@@ -112,31 +112,40 @@ int main(){
                 delete players[i];
             }
             delete[] players;
+            
         }else if (choice == "5"){
-            Infinity_UI ui;
-            Player<char>** players = ui.setup_players();
-            Infinity_Board board;
-            GameManager<char> game(&board, players, &ui);
+            srand(static_cast<unsigned int>(time(0)));
+
+            UI<char>* ui = new Infinity_UI();
+            Board<char>* board = new Infinity_Board();
+
+            Player<char>** players = ui->setup_players();
+
+            GameManager<char> game(board, players, ui);
             game.run();
-            delete players[0]; delete players[1]; delete[] players;
 
-        } else if (choice == "6"){
-            FourByFour_UI ui;
-            string n1, n2;
-            int t1, t2;
-            cout << "Enter player 1 name: "; cin >> n1;
-            cout << "Choose type (1=Human,2=Computer): "; cin >> t1;
-            cout << "Enter player 2 name: "; cin >> n2;
-            cout << "Choose type (1=Human,2=Computer): "; cin >> t2;
+            delete board;
+            for (int i = 0; i < 2; i++){
+                delete players[i];
+            }
+            delete[] players;
 
-            Player<char>* p1 = new Player<char>(n1, 'X', t1 == 1 ? PlayerType::HUMAN : PlayerType::COMPUTER);
-            Player<char>* p2 = new Player<char>(n2, 'O', t2 == 1 ? PlayerType::HUMAN : PlayerType::COMPUTER);
+        }else if (choice == "6"){
+            srand(static_cast<unsigned int>(time(0)));
 
-            FourByFour_Board board;
-            Player<char>** arr = new Player<char>*[2] {p1, p2};
-            GameManager<char> game(&board, arr, &ui);
+            UI<char>* ui = new FourByFour_UI();
+            Board<char>* board = new FourByFour_Board();
+
+            Player<char>** players = ui->setup_players();
+
+            GameManager<char> game(board, players, ui);
             game.run();
-            delete p1; delete p2; delete[] arr;
+
+            delete board;
+            for (int i = 0; i < 2; i++){
+                delete players[i];
+            }
+            delete[] players;
 
         }else{
             cout << "Invalid choice! Please try again.\n";
