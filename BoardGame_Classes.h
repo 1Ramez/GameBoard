@@ -1,5 +1,5 @@
 // BoardGame_classes.h
-// Version 2.1
+// Version 2.3
 // Date: 25 Nov 2023
 // Author: Mohammad El-Ramly
 // Putpose: Core classes to build board XO-style games (x-o, connect4, etc)
@@ -94,8 +94,10 @@ public:
     /** @brief Get number of columns. */
     int get_columns() const { return columns; }
 
-    /** @brief Return content of cell x, y in current board. */
+    /** @brief Get number of moves. */
+    int get_n_moves() const { return n_moves; }
 
+    /** @brief Return content of cell x, y in current board. */
     T get_cell(int x, int y) {
         return board[x][y];
     }
@@ -138,7 +140,7 @@ class Player {
 protected:
     string name;         ///< Player name
     PlayerType type;     ///< Player type (e.g., HUMAN or COMPUTER)
-    T symbol;            ///< Playerï¿½s symbol on board
+    T symbol;            ///< Player’s symbol on board
     Board<T>* boardPtr;  ///< Pointer to the game board
 
 public:
