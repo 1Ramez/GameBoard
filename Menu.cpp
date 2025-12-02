@@ -10,6 +10,7 @@
 #include "XO_FivebyFive.h"
 #include "InfinityXO_Classes.h"
 #include "FourByFour_Classes.h"
+#include "SUS.h"
 using namespace std;
 
 void play_Numerical_TicTacToe(){
@@ -124,6 +125,22 @@ void play_4x4_TicTacToe(){
     }
     delete[] players;
 }
+void play_SUS_TicTacToe(){
+    UI<char>* ui = new SUS_UI();
+    Board<char>* board = new SUS_Board();
+
+    Player<char>** players = ui->setup_players();
+    
+
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete board;
+    for (int i = 0; i < 2; i++){
+        delete players[i];
+    }
+    delete[] players;
+}
 
 int main(){
     srand(static_cast<unsigned int>(time(0)));
@@ -137,6 +154,7 @@ int main(){
         cout << "For 5x5 Tic-Tac-Toe Enter 4\n";
         cout << "For Infinity Tic-Tac-Toe Enter 5\n";
         cout << "For 4x4 Tic-Tac-Toe Enter 6\n";
+        cout << "For SUS Tic-Tac-Toe Enter 7\n";
 
         cout << "Enter your choice: ";
         cin >> choice;
@@ -161,7 +179,10 @@ int main(){
         }else if (choice == "6"){
             play_4x4_TicTacToe();
             
-        }else{
+        }else if (choice == "7"){
+            play_SUS_TicTacToe();
+        }
+        else{
             cout << "Invalid choice! Please try again.\n";
             continue;
         } 
