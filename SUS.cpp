@@ -94,6 +94,7 @@ Move<char>* SUS_UI::get_move(Player<char>* player) {
     if (player->get_type() == PlayerType::HUMAN) {
         cout << player->get_name() << " (" << player->get_symbol() << ") enter x y: ";
         cin >> x >> y;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
     else {
         x = rand() % 3;
