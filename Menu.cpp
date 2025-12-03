@@ -125,6 +125,7 @@ void play_4x4_TicTacToe(){
     }
     delete[] players;
 }
+
 void play_SUS_TicTacToe(){
     UI<char>* ui = new SUS_UI();
     Board<char>* board = new SUS_Board();
@@ -142,21 +143,29 @@ void play_SUS_TicTacToe(){
     delete[] players;
 }
 
+void play_word_TicTacToe(){
+
+}
+
 int main(){
     srand(static_cast<unsigned int>(time(0)));
 
     string choice;
     while(true){
-        cout << "For exit Enter 0\n";
-        cout << "For Numerical Tic-Tac-Toe Enter 1\n";
-        cout << "For Misere Tic-Tac-Toe Enter 2\n";
-        cout << "For Four-in-a-row Enter 3\n";
-        cout << "For 5x5 Tic-Tac-Toe Enter 4\n";
-        cout << "For Infinity Tic-Tac-Toe Enter 5\n";
-        cout << "For 4x4 Tic-Tac-Toe Enter 6\n";
-        cout << "For SUS Tic-Tac-Toe Enter 7\n";
+        cout << "-------------Games Menu---------------\n";
+        cout << "| 1     Numerical Tic-Tac-Toe        |\n";
+        cout << "| 2       Misere Tic-Tac-Toe         |\n";
+        cout << "| 3        Four-in-a-row             |\n";
+        cout << "| 4       5x5 Tic-Tac-Toe            |\n";
+        cout << "| 5     Infinity Tic-Tac-Toe         |\n";
+        cout << "| 6       4x4 Tic-Tac-Toe            |\n";
+        cout << "| 7       SUS Tic-Tac-Toe            |\n";
+        cout << "| 8       Word Tic-Tac-Toe           |\n";
+        cout << "|                                    |\n";
+        cout << "| 0            EXIT                  |\n";
+        cout << "--------------------------------------\n";
 
-        cout << "Enter your choice: ";
+        cout << "\nSelect your Game: ";
         cin >> choice;
 
         if (choice == "0"){
@@ -167,10 +176,10 @@ int main(){
         }else if (choice == "2"){
             play_Misere_TicTacToe();
 
-        }else if(choice == "3"){
+        }else if (choice == "3"){
             play_Four_in_a_row_TicTacToe();
 
-        }else if(choice == "4"){
+        }else if (choice == "4"){
             play_5x5_TicTacToe();
 
         }else if (choice == "5"){
@@ -181,9 +190,12 @@ int main(){
             
         }else if (choice == "7"){
             play_SUS_TicTacToe();
-        }
-        else{
-            cout << "Invalid choice! Please try again.\n";
+
+        }else if (choice == "8"){
+            play_word_TicTacToe();
+
+        }else{
+            cout << "Invalid option! Please try again.\n";
             continue;
         } 
     }
