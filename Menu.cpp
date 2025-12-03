@@ -11,6 +11,7 @@
 #include "InfinityXO_Classes.h"
 #include "FourByFour_Classes.h"
 #include "SUS.h"
+#include "Pyramid_TicTacToe.h"
 using namespace std;
 
 void play_Numerical_TicTacToe(){
@@ -146,6 +147,15 @@ void play_SUS_TicTacToe(){
 void play_word_TicTacToe(){
 
 }
+void play_Pyramid_TicTacToe(){
+     Pyramid_UI<char> ui;
+     Player<char>** players = ui.setup_players();
+     Pyramid_Board<char> board;
+     GameManager<char> game(&board, players, &ui);
+     game.run();
+     delete players[0]; delete players[1]; delete[] players;
+
+}
 
 int main(){
     srand(static_cast<unsigned int>(time(0)));
@@ -161,6 +171,7 @@ int main(){
         cout << "| 6       4x4 Tic-Tac-Toe            |\n";
         cout << "| 7       SUS Tic-Tac-Toe            |\n";
         cout << "| 8       Word Tic-Tac-Toe           |\n";
+        cout << "| 9      Pyramid Tic-Tac-Toe           |\n";
         cout << "|                                    |\n";
         cout << "| 0            EXIT                  |\n";
         cout << "--------------------------------------\n";
@@ -194,6 +205,8 @@ int main(){
         }else if (choice == "8"){
             play_word_TicTacToe();
 
+        }else if (choice == "9"){
+            play_Pyramid_TicTacToe();
         }else{
             cout << "Invalid option! Please try again.\n";
             continue;
