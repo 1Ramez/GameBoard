@@ -12,6 +12,7 @@
 #include "FourByFour_Classes.h"
 #include "SUS.h"
 #include "Pyramid_TicTacToe.h"
+#include "Diamond.h"
 using namespace std;
 
 void play_Numerical_TicTacToe(){
@@ -132,7 +133,6 @@ void play_SUS_TicTacToe(){
     Board<char>* board = new SUS_Board();
 
     Player<char>** players = ui->setup_players();
-    
 
     GameManager<char> game(board, players, ui);
     game.run();
@@ -157,6 +157,23 @@ void play_Pyramid_TicTacToe(){
 
 }
 
+void play_Diamond_TicTacToe(){
+    UI<char>* ui = new Diamond_UI();
+
+    Board<char>* board = new Diamond_Board();
+
+    Player<char>** players = ui->setup_players();
+
+    GameManager<char> game(board, players, ui);
+    game.run();
+    delete board;
+    for (int i = 0; i < 2; i++){
+        delete players[i];
+    }
+    delete[] players;
+}
+
+
 int main(){
     srand(static_cast<unsigned int>(time(0)));
 
@@ -171,8 +188,8 @@ int main(){
         cout << "| 6       4x4 Tic-Tac-Toe            |\n";
         cout << "| 7       SUS Tic-Tac-Toe            |\n";
         cout << "| 8       Word Tic-Tac-Toe           |\n";
-        cout << "| 9      Pyramid Tic-Tac-Toe           |\n";
-        cout << "|                                    |\n";
+        cout << "| 9      Pyramid Tic-Tac-Toe         |\n";
+        cout << "| 10     Diamond Tic-Tac-Toe         |\n";
         cout << "| 0            EXIT                  |\n";
         cout << "--------------------------------------\n";
 
@@ -207,6 +224,9 @@ int main(){
 
         }else if (choice == "9"){
             play_Pyramid_TicTacToe();
+
+        }else if (choice == "10"){
+            play_Diamond_TicTacToe();
         }else{
             cout << "Invalid option! Please try again.\n";
             continue;
