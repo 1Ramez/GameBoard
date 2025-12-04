@@ -13,6 +13,8 @@
 #include "SUS.h"
 #include "Pyramid_TicTacToe.h"
 #include "Diamond.h"
+#include "word_Tic-Tac-Toe.h"
+
 using namespace std;
 
 void play_Numerical_TicTacToe(){
@@ -145,15 +147,32 @@ void play_SUS_TicTacToe(){
 }
 
 void play_word_TicTacToe(){
+    UI<char>* ui = new Word_UI();
+    Board<char>* board = new Word_Board();
 
+    Player<char>** players = ui->setup_players();
+    
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete board;
+    for (int i = 0; i < 2; i++){
+        delete players[i];
+    }
+    delete[] players;
 }
+
 void play_Pyramid_TicTacToe(){
-     Pyramid_UI<char> ui;
-     Player<char>** players = ui.setup_players();
-     Pyramid_Board<char> board;
-     GameManager<char> game(&board, players, &ui);
-     game.run();
-     delete players[0]; delete players[1]; delete[] players;
+    UI<char>* ui = new Pyramid_UI<char>();
+    Player<char>** players = ui->setup_players();
+    Board<char>* board = new Pyramid_Board<char>();
+
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete players[0];
+    delete players[1];
+    delete[] players;
 
 }
 
@@ -190,6 +209,7 @@ int main(){
         cout << "| 8       Word Tic-Tac-Toe           |\n";
         cout << "| 9      Pyramid Tic-Tac-Toe         |\n";
         cout << "| 10     Diamond Tic-Tac-Toe         |\n";
+        cout << "|                                    |\n";
         cout << "| 0            EXIT                  |\n";
         cout << "--------------------------------------\n";
 
@@ -227,6 +247,7 @@ int main(){
 
         }else if (choice == "10"){
             play_Diamond_TicTacToe();
+
         }else{
             cout << "Invalid option! Please try again.\n";
             continue;
