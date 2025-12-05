@@ -1,39 +1,29 @@
-#ifndef _PYRAMID_TICTACTOE_H
-#define _PYRAMID_TICTACTOE_H
+#ifndef PYRAMID_TIC_TAC_TOE_H
+#define PYRAMID_TIC_TAC_TOE_H
 
 #include "BoardGame_Classes.h"
 
-template <typename T>
-class Pyramid_Board : public Board<T> {
+using namespace std;
+
+class Pyramid_Board : public Board<char> {
 public:
     Pyramid_Board();
     bool is_valid_position(int row, int col);
-    bool update_board(Move<T>* move) override;
-    bool check_three_in_line(T symbol);
-    bool is_win(Player<T>* player) override;
-    bool is_lose(Player<T>* player) override;
-    bool is_draw(Player<T>* player) override;
-    bool game_is_over(Player<T>* player) override;
+    bool update_board(Move<char>* move);
+    bool check_three_in_line(char symbol);
+    bool is_win(Player<char>* player);
+    bool is_lose(Player<char>* player);
+    bool is_draw(Player<char>* player);
+    bool game_is_over(Player<char>* player);
 };
 
-template <typename T>
-class Pyramid_HumanPlayer : public Player<T> {
-public:
-    Pyramid_HumanPlayer(string name, T symbol);
-};
-
-template <typename T>
-class Pyramid_RandomPlayer : public Player<T> {
-public:
-    Pyramid_RandomPlayer(string name, T symbol);
-};
-
-template <typename T>
-class Pyramid_UI : public UI<T> {
+class Pyramid_UI : public UI<char> {
 public:
     Pyramid_UI();
-    Move<T>* get_move(Player<T>* player) override;
-    Player<T>* create_player(string& name, T symbol, PlayerType type) override;
+    ~Pyramid_UI() {}
+    Player<char>* create_player(string& name, char symbol, PlayerType type);
+    virtual Move<char>* get_move(Player<char>* player);
+    Player<char>** setup_players();
 };
 
 #endif
