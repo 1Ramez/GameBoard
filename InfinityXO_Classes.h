@@ -1,57 +1,98 @@
+/**
+ * @file InfinityXO_Classes.h
+ * @brief Header file for Infinity Tic-Tac-Toe game implementation
+ */
+
 #pragma once
 #ifndef INFINITY_XO_CLASSES_H
 #define INFINITY_XO_CLASSES_H
 
 #include "BoardGame_Classes.h"
-#include <queue>   // For tracking oldest moves
+#include <queue>
+
 using namespace std;
 
 /**
  * @class Infinity_Board
- * @brief Represents the Infinity Tic-Tac-Toe game board.
- * After every 3 moves, the oldest mark is removed.
+ * @brief Represents the Infinity Tic-Tac-Toe game board
  */
 class Infinity_Board : public Board<char> {
 private:
-    char blank_symbol = '.';        ///< Character used for empty cell
-    queue<pair<int, int>> moveQueue;///< Keeps track of move order
-
+    char blank_symbol = '.';
+    queue<pair<int, int>> moveQueue;
+    
 public:
-    /// @brief Construct a 3x3 Infinity Tic-Tac-Toe board.
+    /**
+     * @brief Constructor that initializes a 3x3 Infinity board
+     */
     Infinity_Board();
-
-    /// @brief Update board with player move or remove oldest if needed.
+    
+    /**
+     * @brief Updates the board with a player's move
+     * @param move Pointer to the Move object
+     * @return true if successful, false otherwise
+     */
     bool update_board(Move<char>* move) override;
-
-    /// @brief Check if player has 3 in a row.
+    
+    /**
+     * @brief Checks if the given player has won
+     * @param player Pointer to the Player object
+     * @return true if won, false otherwise
+     */
     bool is_win(Player<char>* player) override;
-
-    /// @brief Not used (no lose condition for this game).
+    
+    /**
+     * @brief Checks if the given player has lost
+     * @param player Pointer to the Player object
+     * @return Always returns false
+     */
     bool is_lose(Player<char>*) override { return false; }
-
-    /// @brief Check if board is full (draw).
+    
+    /**
+     * @brief Checks if the game ended in a draw
+     * @param player Pointer to the Player object
+     * @return true if draw, false otherwise
+     */
     bool is_draw(Player<char>* player) override;
-
-    /// @brief Game is over if someone wins or it�s a draw.
+    
+    /**
+     * @brief Checks if the game is over
+     * @param player Pointer to the Player object
+     * @return true if game over, false otherwise
+     */
     bool game_is_over(Player<char>* player) override;
 };
 
 /**
  * @class Infinity_UI
- * @brief Handles user input and output for Infinity Tic-Tac-Toe.
+ * @brief User interface handler for Infinity Tic-Tac-Toe game
  */
 class Infinity_UI : public UI<char> {
 public:
-    /// @brief Constructor displaying welcome message.
+    /**
+     * @brief Constructor that displays welcome message
+     */
     Infinity_UI();
-
-    /// @brief Destructor.
+    
+    /**
+     * @brief Destructor
+     */
     ~Infinity_UI() {}
-
-    /// @brief Create player based on name and type.
+    
+    /**
+     * @brief Creates a player object based on type
+     * @param name Reference to the player's name
+     * @param symbol The player's symbol
+     * @param type The type of player
+     * @return Pointer to the created Player object
+     */
     Player<char>* create_player(string& name, char symbol, PlayerType type) override;
-
-    /// @brief Get the next move from a player.
+    
+    /**
+     * @brief Gets the next move from a player
+     * @param player Pointer to the Player object
+     * @return Pointer to a Move object
+     */
     Move<char>* get_move(Player<char>* player) override;
 };
 
