@@ -1,31 +1,31 @@
 #include "Pyramid_TicTacToe.h"
-#include <iostream>
+#include <algorithm>
+#include <limits>
 #include <cstdlib>
 #include <ctime>
-
-using namespace std;
-
-//=============================================================================
-// Pyramid_Board Implementation
-//=============================================================================
 
 template <typename T>
 Pyramid_Board<T>::Pyramid_Board() : Board<T>(3, 5) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 5; j++) {
-            this->board[i][j] = static_cast<T>(' ');
+            if (is_valid_position(i, j)) {
+                this->board[i][j] = ' ';
+            } else {
+                this->board[i][j] = '#';
+            }
         }
     }
 }
 
 template <typename T>
-bool Pyramid_Board<T>::is_valid_position(int x, int y) {
-    if (x < 0 || x >= 3 || y < 0 || y >= 5) return false;
-
-    if (x == 0) return y == 2;           // Top: only middle column
-    if (x == 1) return y >= 1 && y <= 3; // Middle: 3 cells
-    if (x == 2) return true;              // Base: all 5 cells
-
+bool Pyramid_Board<T>::is_valid_position(int row, int col) {
+    if (row < 0 || row >= 3 || col < 0 || col >= 5)
+        return false;
+    
+    if (row == 0 && col == 2) return true;
+    if (row == 1 && (col >= 1 && col <= 3)) return true;
+    if (row == 2) return true;
+    
     return false;
 }
 
@@ -33,67 +33,50 @@ template <typename T>
 bool Pyramid_Board<T>::update_board(Move<T>* move) {
     int x = move->get_x();
     int y = move->get_y();
+    T symbol = move->get_symbol();
 
     if (!is_valid_position(x, y)) {
-        cout << "Invalid position! Not in pyramid structure.\n";
         return false;
     }
 
-    if (this->board[x][y] != static_cast<T>(' ')) {
-        cout << "Position already occupied!\n";
+    if (this->board[x][y] != ' ') {
         return false;
     }
 
-    this->board[x][y] = move->get_symbol();
+    this->board[x][y] = symbol;
     this->n_moves++;
     return true;
 }
 
 template <typename T>
-bool Pyramid_Board<T>::check_win(T symbol) {
-    // Check horizontal line in row 1
-    if (this->board[1][1] == symbol &&
-        this->board[1][2] == symbol &&
-        this->board[1][3] == symbol) {
+bool Pyramid_Board<T>::check_three_in_line(T symbol) {
+    if (this->board[1][1] == symbol && this->board[1][2] == symbol && this->board[1][3] == symbol)
         return true;
-    }
-
-    // Check horizontal lines in row 2 (3 possible)
-    for (int j = 0; j <= 2; j++) {
-        if (this->board[2][j] == symbol &&
-            this->board[2][j + 1] == symbol &&
-            this->board[2][j + 2] == symbol) {
-            return true;
-        }
-    }
-
-    // Check vertical line (column 2)
-    if (this->board[0][2] == symbol &&
-        this->board[1][2] == symbol &&
-        this->board[2][2] == symbol) {
+    if (this->board[2][0] == symbol && this->board[2][1] == symbol && this->board[2][2] == symbol)
         return true;
-    }
-
-    // Check diagonal: top to bottom-left
-    if (this->board[0][2] == symbol &&
-        this->board[1][1] == symbol &&
-        this->board[2][0] == symbol) {
+    if (this->board[2][1] == symbol && this->board[2][2] == symbol && this->board[2][3] == symbol)
         return true;
-    }
-
-    // Check diagonal: top to bottom-right
-    if (this->board[0][2] == symbol &&
-        this->board[1][3] == symbol &&
-        this->board[2][4] == symbol) {
+    if (this->board[2][2] == symbol && this->board[2][3] == symbol && this->board[2][4] == symbol)
         return true;
-    }
+
+    if (this->board[0][2] == symbol && this->board[1][2] == symbol && this->board[2][2] == symbol)
+        return true;
+
+    if (this->board[0][2] == symbol && this->board[1][1] == symbol && this->board[2][0] == symbol)
+        return true;
+    if (this->board[0][2] == symbol && this->board[1][3] == symbol && this->board[2][4] == symbol)
+        return true;
+    if (this->board[1][1] == symbol && this->board[2][2] == symbol && this->board[2][3] == symbol)
+        return true;
+    if (this->board[1][3] == symbol && this->board[2][2] == symbol && this->board[2][1] == symbol)
+        return true;
 
     return false;
 }
 
 template <typename T>
 bool Pyramid_Board<T>::is_win(Player<T>* player) {
-    return check_win(player->get_symbol());
+    return check_three_in_line(player->get_symbol());
 }
 
 template <typename T>
@@ -103,8 +86,11 @@ bool Pyramid_Board<T>::is_lose(Player<T>* player) {
 
 template <typename T>
 bool Pyramid_Board<T>::is_draw(Player<T>* player) {
-    // Total valid cells: 1 + 3 + 5 = 9
-    return (this->n_moves == 9 && !is_win(player));
+    if (this->n_moves >= 9) {
+        if (is_win(player)) return false;
+        return true;
+    }
+    return false;
 }
 
 template <typename T>
@@ -112,88 +98,71 @@ bool Pyramid_Board<T>::game_is_over(Player<T>* player) {
     return is_win(player) || is_draw(player);
 }
 
-//=============================================================================
-// Pyramid_Player Implementation
-//=============================================================================
-
 template <typename T>
-Pyramid_Player<T>::Pyramid_Player(string name, T symbol)
+Pyramid_HumanPlayer<T>::Pyramid_HumanPlayer(string name, T symbol)
     : Player<T>(name, symbol, PlayerType::HUMAN) {}
 
-//=============================================================================
-// Pyramid_Random_Player Implementation
-//=============================================================================
+template <typename T>
+Pyramid_RandomPlayer<T>::Pyramid_RandomPlayer(string name, T symbol)
+    : Player<T>(name, symbol, PlayerType::COMPUTER) {}
 
 template <typename T>
-Pyramid_Random_Player<T>::Pyramid_Random_Player(T symbol)
-    : Player<T>("Random Computer", symbol, PlayerType::COMPUTER) {}
-
-//=============================================================================
-// Pyramid_UI Implementation
-//=============================================================================
-
-template <typename T>
-Pyramid_UI<T>::Pyramid_UI()
-    : UI<T>("Welcome to Pyramid Tic-Tac-Toe!", 3) {}
+Pyramid_UI<T>::Pyramid_UI() : UI<T>("=== Pyramid Tic-Tac-Toe ===", 3) {}
 
 template <typename T>
 Move<T>* Pyramid_UI<T>::get_move(Player<T>* player) {
-    int x, y;
-
-    // Display the pyramid board first
-    Pyramid_Board<T>* board = dynamic_cast<Pyramid_Board<T>*>(player->get_board_ptr());
-    auto matrix = board->get_board_matrix();
-
-    cout << "\n";
-    cout << "        " << matrix[0][2] << "  \n";
-    cout << "       --- \n";
-    cout << "      " << matrix[1][1] << " " << matrix[1][2] << " " << matrix[1][3] << " \n";
-    cout << "     -------\n";
-    cout << "    " << matrix[2][0] << " " << matrix[2][1] << " "
-        << matrix[2][2] << " " << matrix[2][3] << " " << matrix[2][4] << "\n";
-    cout << "   -----------\n\n";
-
     if (player->get_type() == PlayerType::HUMAN) {
-        cout << player->get_name() << " (" << player->get_symbol() << "), enter your move.\n";
-        cout << "Positions:\n";
-        cout << "  Row 0: column 2 only (top)\n";
-        cout << "  Row 1: columns 1, 2, 3 (middle)\n";
-        cout << "  Row 2: columns 0, 1, 2, 3, 4 (base)\n";
-        cout << "Row: ";
-        cin >> x;
-        cout << "Column: ";
-        cin >> y;
+        int x, y;
+        cout << player->get_name() << "'s turn (" << player->get_symbol() << ")\n";
+        cout << "Enter row and column (e.g., 0 2): ";
+        cin >> x >> y;
+        
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return new Move<T>(-1, -1, player->get_symbol());
+        }
+        
+        return new Move<T>(x, y, player->get_symbol());
+    } else {
+        Pyramid_Board<T>* board = dynamic_cast<Pyramid_Board<T>*>(player->get_board_ptr());
+        vector<pair<int, int>> valid_moves;
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (board->is_valid_position(i, j)) {
+                    auto matrix = board->get_board_matrix();
+                    if (matrix[i][j] == ' ') {
+                        valid_moves.push_back({i, j});
+                    }
+                }
+            }
+        }
+        
+        if (valid_moves.empty()) {
+            return new Move<T>(-1, -1, player->get_symbol());
+        }
+        
+        int random_index = rand() % valid_moves.size();
+        auto move = valid_moves[random_index];
+        
+        cout << player->get_name() << " (Computer) plays: " 
+             << move.first << " " << move.second << "\n";
+        
+        return new Move<T>(move.first, move.second, player->get_symbol());
     }
-    else {
-        // Random computer player
-        do {
-            x = rand() % 3;
-            if (x == 0) y = 2;
-            else if (x == 1) y = 1 + rand() % 3;
-            else y = rand() % 5;
-        } while (matrix[x][y] != static_cast<T>(' '));
-
-        cout << player->get_name() << " chose: (" << x << ", " << y << ")\n";
-    }
-
-    return new Move<T>(x, y, player->get_symbol());
 }
 
 template <typename T>
 Player<T>* Pyramid_UI<T>::create_player(string& name, T symbol, PlayerType type) {
     if (type == PlayerType::HUMAN) {
-        return new Pyramid_Player<T>(name, symbol);
-    }
-    else {
-        return new Pyramid_Random_Player<T>(symbol);
+        return new Pyramid_HumanPlayer<T>(name, symbol);
+    } else {
+        return new Pyramid_RandomPlayer<T>(name, symbol);
     }
 }
 
-//=============================================================================
-// Explicit Template Instantiation
-//=============================================================================
-
 template class Pyramid_Board<char>;
-template class Pyramid_Player<char>;
-template class Pyramid_Random_Player<char>;
+template class Pyramid_HumanPlayer<char>;
+template class Pyramid_RandomPlayer<char>;
 template class Pyramid_UI<char>;

@@ -171,8 +171,9 @@ void play_word_TicTacToe(){
 
 void play_Pyramid_TicTacToe(){
     UI<char>* ui = new Pyramid_UI<char>();
-    Player<char>** players = ui->setup_players();
     Board<char>* board = new Pyramid_Board<char>();
+
+    Player<char>** players = ui->setup_players();
 
     GameManager<char> game(board, players, ui);
     game.run();
@@ -183,7 +184,6 @@ void play_Pyramid_TicTacToe(){
         delete players[i];
     }
     delete[] players;
-
 }
 
 void play_Diamond_TicTacToe(){
