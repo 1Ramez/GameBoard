@@ -54,6 +54,7 @@ bool Word_Board::is_win(Player<char>* player) {
         string reversed_row = row;
         reverse(reversed_row.begin(), reversed_row.end());
         if (words.count(row) || words.count(reversed_row)){
+            cout << player->get_name() << " formed: " << (words.count(row) ? row : reversed_row) << '\n';
             return true;
         }
     }
@@ -67,6 +68,7 @@ bool Word_Board::is_win(Player<char>* player) {
         string reversed_column = column;
         reverse(reversed_column.begin(), reversed_column.end());
         if (words.count(column) || words.count(reversed_column)){
+            cout << player->get_name() << " formed: " << (words.count(column) ? column : reversed_column) << '\n';
             return true;
         }
     }
@@ -79,6 +81,7 @@ bool Word_Board::is_win(Player<char>* player) {
     string reversed_diagonal = diagonal;
     reverse(reversed_diagonal.begin(), reversed_diagonal.end());
     if (words.count(diagonal) || words.count(reversed_diagonal)){
+        cout << player->get_name() << " formed: " << (words.count(diagonal) ? diagonal : reversed_diagonal) << '\n';
         return true;
     }
 
@@ -90,6 +93,7 @@ bool Word_Board::is_win(Player<char>* player) {
     string reversed_anti = anti;
     reverse(reversed_anti.begin(), reversed_anti.end());
     if (words.count(anti) || words.count(reversed_anti)){
+        cout << player->get_name() << " formed: " << (words.count(anti) ? anti : reversed_anti) << '\n';
         return true;
     }
 

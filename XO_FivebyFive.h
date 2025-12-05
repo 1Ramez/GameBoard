@@ -8,6 +8,7 @@ class XO_5x5_Board : public Board<char> {
 private:
     char blank_symbol = ' ';
     int p1_score = 0, p2_score = 0;
+    string p1_name, p2_name;
 public:
     XO_5x5_Board();
     bool update_board(Move<char>* move);

@@ -20,14 +20,9 @@ bool XO_5x5_Board::update_board(Move<char>* move) {
     int y = move->get_y();
     char mark = move->get_symbol();
 
-    if (!(x < 0 || x >= rows || y < 0 || y >= columns) && (board[x][y] == blank_symbol || mark == 0)){
-        if (mark == 0){
-            n_moves--;
-            board[x][y] = blank_symbol;
-        }else{
-            n_moves++;
-            board[x][y] = toupper(mark);
-        }
+    if (!(x < 0 || x >= rows || y < 0 || y >= columns) && (board[x][y] == blank_symbol) ){
+        n_moves++;
+        board[x][y] = mark;
         return true;
     }
     return false;
@@ -76,11 +71,15 @@ bool XO_5x5_Board::is_win(Player<char>* player) {
     //Recording scores
     if (sym == 'X'){
         p1_score = score;
+        p1_name = player->get_name();
     }else{
         p2_score = score;
+        p2_name = player->get_name();
     }
 
     if(n_moves == 24 && p2_score > p1_score){
+        cout << p1_name << "'s score is " << p1_score << '\n';
+        cout << p2_name << "'s score is " << p2_score << '\n';
         return true;
     }
 
@@ -89,6 +88,8 @@ bool XO_5x5_Board::is_win(Player<char>* player) {
 
 bool XO_5x5_Board::is_lose(Player<char>* player){
     if (n_moves == 24 && p1_score > p2_score){
+        cout << p1_name << "'s score is " << p1_score << '\n';
+        cout << p2_name << "'s score is " << p2_score << '\n';
         return true;
     }
     
@@ -96,7 +97,12 @@ bool XO_5x5_Board::is_lose(Player<char>* player){
 }
 
 bool XO_5x5_Board::is_draw(Player<char>* player) {
-    return (n_moves == 24 && p1_score == p2_score);
+    if (n_moves == 24 && p1_score == p2_score){
+        cout << p1_name << "'s score is " << p1_score << '\n';
+        cout << p2_name << "'s score is " << p2_score << '\n';
+        return true;
+    }
+    return false;
 }
 
 bool XO_5x5_Board::game_is_over(Player<char>* player) {
