@@ -170,8 +170,8 @@ void play_word_TicTacToe(){
 }
 
 void play_Pyramid_TicTacToe(){
-    UI<char>* ui = new Pyramid_UI<char>();
-    Board<char>* board = new Pyramid_Board<char>();
+    UI<char>* ui = new Pyramid_UI();
+    Board<char>* board = new Pyramid_Board();
 
     Player<char>** players = ui->setup_players();
 
