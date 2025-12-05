@@ -14,6 +14,7 @@
 #include "Pyramid_TicTacToe.h"
 #include "Diamond.h"
 #include "word_Tic-Tac-Toe.h"
+#include "obstacles_Tic-Tac-Toe.h"
 
 using namespace std;
 
@@ -42,24 +43,25 @@ void play_Numerical_TicTacToe(){
     GameManager<int> game(board, players, ui);
     game.run();
 
-    delete players[0];
-    delete players[1];
-    delete[] players;
-    delete board;
     delete ui;
+    delete board;
+    for (int i = 0; i < 2; i++){
+        delete players[i];
+    }
+    delete[] players;
 }
 
 void play_Misere_TicTacToe(){
     UI<char>* ui = new Misere_UI();
-    Board<char>* xo_board = new Misere_Board();
+    Board<char>* board = new Misere_Board();
 
     Player<char>** players = ui->setup_players();
 
-    GameManager<char> Misere_game(xo_board, players, ui);
+    GameManager<char> game(board, players, ui);
+    game.run();
 
-    Misere_game.run();
-
-    delete xo_board;
+    delete ui;
+    delete board;
     for (int i = 0; i < 2; i++){
         delete players[i];
     }
@@ -67,32 +69,33 @@ void play_Misere_TicTacToe(){
 }
 
 void play_Four_in_a_row_TicTacToe(){ 
-    UI<char>* game_ui = new Four_in_a_row_UI();
-    Board<char>* xo_board = new Four_in_a_row_Board();
+    UI<char>* ui = new Four_in_a_row_UI();
+    Board<char>* board = new Four_in_a_row_Board();
 
-    Player<char>** players = game_ui->setup_players();
+    Player<char>** players = ui->setup_players();
 
-    GameManager<char> four_in_a_row_game(xo_board, players, game_ui);
+    GameManager<char> game(board, players, ui);
+    game.run();
 
-    four_in_a_row_game.run();
-
-    delete xo_board;
-    for (int i = 0; i < 2; ++i){
+    delete ui;
+    delete board;
+    for (int i = 0; i < 2; i++){
         delete players[i];
     }
     delete[] players;
 }
 
 void play_5x5_TicTacToe(){
-    UI<char>* game_ui = new XO_5x5_UI();
-    Board<char>* xo_board = new XO_5x5_Board();
-    Player<char>** players = game_ui->setup_players();
+    UI<char>* ui = new XO_5x5_UI();
+    Board<char>* board = new XO_5x5_Board();
+    Player<char>** players = ui->setup_players();
 
-    GameManager<char> x_o_game(xo_board, players, game_ui);
+    GameManager<char> x_o_game(board, players, ui);
     x_o_game.run();
 
-    delete xo_board;
-    for (int i = 0; i < 2; ++i){
+    delete ui;
+    delete board;
+    for (int i = 0; i < 2; i++){
         delete players[i];
     }
     delete[] players;
@@ -107,6 +110,7 @@ void play_Infinity_TicTacToe(){
     GameManager<char> game(board, players, ui);
     game.run();
 
+    delete ui;
     delete board;
     for (int i = 0; i < 2; i++){
         delete players[i];
@@ -123,6 +127,7 @@ void play_4x4_TicTacToe(){
     GameManager<char> game(board, players, ui);
     game.run();
 
+    delete ui;
     delete board;
     for (int i = 0; i < 2; i++){
         delete players[i];
@@ -139,6 +144,7 @@ void play_SUS_TicTacToe(){
     GameManager<char> game(board, players, ui);
     game.run();
 
+    delete ui;
     delete board;
     for (int i = 0; i < 2; i++){
         delete players[i];
@@ -155,6 +161,7 @@ void play_word_TicTacToe(){
     GameManager<char> game(board, players, ui);
     game.run();
 
+    delete ui;
     delete board;
     for (int i = 0; i < 2; i++){
         delete players[i];
@@ -170,21 +177,42 @@ void play_Pyramid_TicTacToe(){
     GameManager<char> game(board, players, ui);
     game.run();
 
-    delete players[0];
-    delete players[1];
+    delete ui;
+    delete board;
+    for (int i = 0; i < 2; i++){
+        delete players[i];
+    }
     delete[] players;
 
 }
 
 void play_Diamond_TicTacToe(){
     UI<char>* ui = new Diamond_UI();
-
     Board<char>* board = new Diamond_Board();
 
     Player<char>** players = ui->setup_players();
 
     GameManager<char> game(board, players, ui);
     game.run();
+
+    delete ui;
+    delete board;
+    for (int i = 0; i < 2; i++){
+        delete players[i];
+    }
+    delete[] players;
+}
+
+void play_Obstacles_TicTacToe(){
+    UI<char>* ui = new Obstacles_UI();
+    Board<char>* board = new Obstacles_Board();
+
+    Player<char>** players = ui->setup_players();
+
+    GameManager<char> game(board, players, ui);
+    game.run();
+
+    delete ui;
     delete board;
     for (int i = 0; i < 2; i++){
         delete players[i];
@@ -209,6 +237,7 @@ int main(){
         cout << "| 8       Word Tic-Tac-Toe           |\n";
         cout << "| 9      Pyramid Tic-Tac-Toe         |\n";
         cout << "| 10     Diamond Tic-Tac-Toe         |\n";
+        cout << "| 11    Obstacles Tic-Tac-Toe        |\n";
         cout << "|                                    |\n";
         cout << "| 0            EXIT                  |\n";
         cout << "--------------------------------------\n";
@@ -248,8 +277,11 @@ int main(){
         }else if (choice == "10"){
             play_Diamond_TicTacToe();
 
+        }else if (choice == "11"){
+            play_Obstacles_TicTacToe();
+            
         }else{
-            cout << "Invalid option! Please try again.\n";
+            cout << "Invalid option! Please try again.\n\n";
             continue;
         } 
     }
