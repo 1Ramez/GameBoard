@@ -108,6 +108,20 @@ public:
      * @return Pointer to a Move object containing chosen position and number.
      */
     Move<int>* get_move(Player<int>* player) override;
+
+    /**
+     * @brief Sets up both players for the game.
+     *
+     * Prompts the user to enter names and select player types 
+     * (Human or Computer) for Player 1 and Player 2. 
+     * Assigns symbols automatically:
+     *   - Player 1 → Symbol **1** (odd numbers)
+     *   - Player 2 → Symbol **2** (even numbers)
+     *
+     * @return A dynamically allocated array of two Player pointers.
+     *         Caller is responsible for deleting them.
+     */
+    Player<int>** setup_players();
 };
 
 #endif // NUMERICAL_H
