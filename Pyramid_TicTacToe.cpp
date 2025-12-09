@@ -49,6 +49,7 @@ bool Pyramid_Board::update_board(Move<char>* move) {
 bool Pyramid_Board::check_three_in_line(char symbol) {
     if (board[1][1] == symbol && board[1][2] == symbol && board[1][3] == symbol)
         return true;
+
     if (board[2][0] == symbol && board[2][1] == symbol && board[2][2] == symbol)
         return true;
     if (board[2][1] == symbol && board[2][2] == symbol && board[2][3] == symbol)
@@ -63,13 +64,10 @@ bool Pyramid_Board::check_three_in_line(char symbol) {
         return true;
     if (board[0][2] == symbol && board[1][3] == symbol && board[2][4] == symbol)
         return true;
-    if (board[1][1] == symbol && board[2][2] == symbol && board[2][3] == symbol)
-        return true;
-    if (board[1][3] == symbol && board[2][2] == symbol && board[2][1] == symbol)
-        return true;
 
     return false;
 }
+
 
 bool Pyramid_Board::is_win(Player<char>* player) {
     return check_three_in_line(player->get_symbol());
